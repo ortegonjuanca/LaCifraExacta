@@ -1,8 +1,8 @@
 {
     "version": 2,
-    "routes": [{ "src": "/(.*)", "dest": "app.py" }],
+    "routes": [{ "src": "/(.*)", "dest": "/api/app" }],
     "functions": {
-        "templates/*": {
+        "api/*": {
             "maxDuration": 60
         }
     }
