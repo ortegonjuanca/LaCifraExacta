@@ -21,7 +21,7 @@ def index():
         else:
             return jsonify({'error': 'No solution found!'})
         
-    return render_template('../templates/index.html')
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
