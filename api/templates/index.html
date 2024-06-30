@@ -2,9 +2,9 @@
 <html
     style="
         background-color: aliceblue;
-        padding-top: 2rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding-top: 1rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     "
 >
     <head>
@@ -25,10 +25,35 @@
             crossorigin="anonymous"
         ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type="number"] {
+                -moz-appearance: textfield;
+                appearance: textfield;
+            }
+
+            .input-square {
+                width: 5rem;
+                height: 5rem;
+                text-align: center;
+                border: 2px solid black;
+                border-radius: 10px;
+                font-size: 24px;
+            }
+        </style>
     </head>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#form").on("submit", function (e) {
+                let resultContainer =
+                    document.getElementById("resultContainer");
+                resultContainer.style.display = "none";
+
                 $.ajax({
                     data: {
                         number1: $("#number1").val(),
@@ -48,13 +73,31 @@
                             data.execution_time.toFixed(2) +
                             " segundos"
                     );
-                    let list = document.getElementById("resultList");
-                    list.innerHTML = "";
+                    let resultDiv = document.getElementById("result");
+                    resultDiv.innerHTML = "";
                     for (i = 0; i < data.result.length; ++i) {
-                        let li = document.createElement("li");
-                        li.innerText = i + 1 + "º) " + data.result[i];
-                        list.appendChild(li);
+                        let row = document.createElement("div");
+                        row.className = "row justify-content-center";
+                        row.style = "padding-bottom: 0.5rem";
+
+                        var operations = data.result[i].split(" ");
+                        for (j = 0; j < operations.length; ++j) {
+                            let col = document.createElement("div");
+                            col.className = "col-auto";
+                            let input = document.createElement("input");
+                            input.type = "text";
+                            input.className = "form-control input-square";
+                            input.value = operations[j];
+                            input.readOnly = true;
+                            col.appendChild(input);
+                            row.appendChild(col);
+                        }
+
+                        resultDiv.appendChild(row);
                     }
+                    let resultContainer =
+                        document.getElementById("resultContainer");
+                    resultContainer.style.display = "block";
                 });
                 e.preventDefault();
             });
@@ -64,7 +107,7 @@
         <h2
             class="container text-center alert alert-primary"
             role="alert"
-            style="text-align: center; margin-bottom: 2rem"
+            style="text-align: center; margin-bottom: 1rem"
         >
             La Cifra Exacta
         </h2>
@@ -76,26 +119,25 @@
                 >
                     <div class="col-auto">
                         <label for="number1" class="form-label"
-                            >1º Número</label
+                            ><strong>1º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number1"
                             name="number1"
                             required
                             min="1"
-                            maxlength="3"
                             value="1"
                         />
                     </div>
                     <div class="col-auto">
                         <label for="number2" class="form-label"
-                            >2º Número</label
+                            ><strong>2º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number2"
                             name="number2"
                             required
@@ -105,11 +147,11 @@
                     </div>
                     <div class="col-auto">
                         <label for="number3" class="form-label"
-                            >3º Número</label
+                            ><strong>3º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number3"
                             name="number3"
                             required
@@ -124,11 +166,11 @@
                 >
                     <div class="col-auto">
                         <label for="number4" class="form-label"
-                            >4º Número</label
+                            ><strong>4º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number4"
                             name="number4"
                             required
@@ -138,11 +180,11 @@
                     </div>
                     <div class="col-auto">
                         <label for="number5" class="form-label"
-                            >5º Número</label
+                            ><strong>5º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number5"
                             name="number5"
                             required
@@ -152,11 +194,11 @@
                     </div>
                     <div class="col-auto">
                         <label for="number6" class="form-label"
-                            >6º Número</label
+                            ><strong>6º Núm.</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="number6"
                             name="number6"
                             required
@@ -170,10 +212,12 @@
                     style="padding-bottom: 2rem"
                 >
                     <div class="col-auto">
-                        <label for="target" class="form-label">Cifra</label>
+                        <label for="target" class="form-label"
+                            ><strong>Cifra</strong></label
+                        >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="target"
                             name="target"
                             required
@@ -183,11 +227,11 @@
                     </div>
                     <div class="col-auto">
                         <label for="target" class="form-label"
-                            >Tiempo máximo de ejecución</label
+                            ><strong>Tiempo</strong></label
                         >
                         <input
                             type="number"
-                            class="form-control text-center"
+                            class="form-control input-square"
                             id="timeout"
                             name="timeout"
                             required
@@ -196,17 +240,21 @@
                         />
                     </div>
                 </div>
-                <div class="d-grid col-6 mx-auto">
-                    <button type="submit" class="btn btn-success">
+                <div class="row justify-content-center">
+                    <button type="submit" class="btn btn-success col-2">
                         Calcular
                     </button>
                 </div>
             </form>
         </div>
 
-        <div class="container text-center alert alert-warning">
+        <div
+            id="resultContainer"
+            class="container text-center alert alert-warning"
+            style="display: none; padding-top: 1rem"
+        >
             <p id="executionTime"></p>
-            <ul id="resultList" style="list-style-type: none"></ul>
+            <div id="result" class="container"></div>
         </div>
     </body>
 </html>
